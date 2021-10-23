@@ -1,0 +1,20 @@
+org: hakimks
+app: project-capstone
+service: project-capstone
+frameworkVersion: '2'
+
+plugins:
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
+  region: us-east-1
+
+functions:
+  
+
+resources:
+  Resources:
+    
