@@ -1,34 +1,36 @@
 # Project: Capstone for Udacity Cloud Nanodegre - serverless design
- Re-using the Front Udagram Application.
+ Re-using the Serverless-TODO app.
 
 
 The project is split into two parts:
-1. Frontend - Angular web application built with Ionic Framework
+1. Frontend - 
 2. Backend RESTful API - Node-Express application
 
 
-### 1. Frontend App - Udagram Image Filtering Application
+### 1. Frontend App 
 
-Udagram is a simple cloud application developed alongside the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
-Launch the frontend app locally.
+The `client` folder contains a web application that can use the API that should be developed in the project.
 
-* To download all the package dependencies, run the command from the directory `udagram-frontend/`:
-    ```bash
-    npm install .
-    ```
-* Install Ionic Framework's Command Line tools for us to build and run the application:
-    ```bash
-    npm install -g ionic
-    ```
-* Prepare your application by compiling them into static files.
-    ```bash
-    ionic build
-    ```
-* Run the application locally using files created from the `ionic build` command.
-    ```bash
-    ionic serve
-    ```
-* You can visit `http://localhost:8100` in your web browser to verify that the application is running. You should see a web interface.
+This frontend should work with your serverless application once it is developed, you don't need to make any changes to the code. The only file that you need to edit is the `config.ts` file in the `client` folder. This file configures your client application just as it was done in the course and contains an API endpoint and Auth0 configuration:
+
+```ts
+const apiId = '...' API Gateway id
+export const apiEndpoint = `https://${apiId}.execute-api.us-east-1.amazonaws.com/dev`
+
+export const authConfig = {
+  domain: '...',    // Domain from Auth0
+  clientId: '...',  // Client id from an Auth0 application
+  callbackUrl: 'http://localhost:3000/callback'
+}
+```
+To run a client application first edit the client/src/config.ts file to set correct parameters. And then run the following commands:
+ ```
+cd client
+npm install
+npm run start
+```
+
+This should start a development server with the React application that will interact with the serverless TODO application.
 
 
 ### 2. Need to implement the backend using AWS Lambda and Serverless framework
