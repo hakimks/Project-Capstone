@@ -6,7 +6,7 @@ export class VideosAccess{
     constructor(
         private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'}),
         private readonly videoTable = process.env.VIDEOS_TABLE,
-        private readonly indexName = process.env.VIDEOS_TABLE_INDEX
+        // private readonly indexName = process.env.VIDEOS_TABLE_INDEX
     ){}
 
     // Get all vidoes for the user
@@ -15,7 +15,7 @@ export class VideosAccess{
 
         const results = await this.docClient.query({
             TableName: this.videoTable,
-            IndexName: this.indexName,
+            // IndexName: this.indexName,
             KeyConditionExpression: 'userId = :userId',
             ExpressionAttributeValues: {
                 ':userId': userId
