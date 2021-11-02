@@ -73,10 +73,13 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
   async componentDidMount() {
     try {
       const videos = await getVideos(this.props.auth.getIdToken())
+      console.log("video Items - ", videos);
+      
       this.setState({
         videos,
         loadingVideos: false
       })
+      
     } catch (e) {
       if(e instanceof Error){
         alert(`Failed to fetch Videos: ${e.message}`)
@@ -91,7 +94,7 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
 
         {this.renderCreateVideoInput()}
 
-        {this.renderTodos()}
+        {this.renderVideosList()}
       </div>
     )
   }
@@ -141,7 +144,7 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
   }
 
 
-  renderTodos() {
+  renderVideosList() {
     if (this.state.loadingVideos) {
       return this.renderLoading()
     }

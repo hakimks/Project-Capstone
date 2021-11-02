@@ -12,7 +12,7 @@ export async function getVideos(idToken: string): Promise<Video[]> {
         'Authorization': `Bearer ${idToken}`
       },
     })
-    console.log('Videos:', response.data)
+    console.log('Videos from axios:', response.data)
     return response.data.items
   }
 
