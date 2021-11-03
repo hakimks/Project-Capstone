@@ -21,3 +21,8 @@ export async function createVideo(userId: string, createVideoRequest: CreateVide
         videoUrl: createVideoRequest.videoUrl
     })
 }
+
+export async function deleteVideo(userId:string, videoId: string) {
+    return videosAccess.deleteVideo(userId, videoId)
+}
+

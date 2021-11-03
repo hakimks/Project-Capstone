@@ -37,4 +37,23 @@ export class VideosAccess{
         
         return videoItem;
     }
+
+    // Delete a video
+    async deleteVideo(userId: string, videoId:String){
+        const params = {
+            TableName: this.videoTable,
+            Key: {
+                userId,
+                videoId
+            }
+        }
+        await this.docClient.delete(params, function(err, data){
+            if (err) {
+                console.error("Unable to delete Video", JSON.stringify(err))
+            } else {
+                console.log("Video deleted successfully!", JSON.stringify(data))
+            }
+        }).promise()
+        return null
+    }
 }

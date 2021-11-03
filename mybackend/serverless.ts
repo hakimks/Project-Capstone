@@ -88,6 +88,21 @@ const serverlessConfiguration: AWS = {
           },
         },
       ],
+    },
+    deleteVideo: {
+      handler: 'src/lambda/http/deleteVideo.handler',
+      events: [
+        {
+          http: {
+            method: 'delete',
+            path: 'videos/{videoId}',
+            cors: true,
+            authorizer: {
+              name: "Auth"
+            },
+          },
+        },
+      ],
     }
    },
    resources: {
