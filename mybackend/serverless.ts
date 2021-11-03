@@ -61,6 +61,18 @@ const serverlessConfiguration: AWS = {
           },
         },
       ],
+    },
+    createVideo: {
+      handler: 'src/lambda/http/createVideo.handler',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: 'videos',
+            cors: true
+          },
+        },
+      ],
     }
    },
    resources: {
