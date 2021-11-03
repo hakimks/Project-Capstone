@@ -69,7 +69,12 @@ const serverlessConfiguration: AWS = {
           http: {
             method: 'post',
             path: 'videos',
-            cors: true
+            cors: true,
+            request: {
+              schema: {
+                'application/json': '${file(src/schema/create-video-schema.json)}'
+              }
+            }
           },
         },
       ],
