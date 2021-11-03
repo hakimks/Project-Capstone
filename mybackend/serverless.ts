@@ -77,7 +77,9 @@ const serverlessConfiguration: AWS = {
             method: 'post',
             path: 'videos',
             cors: true,
-            // authorizer: "${self:functions.Auth}",
+            authorizer: {
+              name: "Auth"
+            },
             request: {
               schemas: {
                 'application/json': '${file(src/schema/create-video-schema.json)}'
