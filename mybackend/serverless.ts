@@ -50,6 +50,10 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: { 
+    Auth: {
+      handler: 'src/lambda/auth/authorizer.handler'
+
+    },
     getVideos: {
       handler: 'src/lambda/http/getVideos.handler',
       events: [
@@ -57,7 +61,10 @@ const serverlessConfiguration: AWS = {
           http: {
             method: 'get',
             path: 'videos',
-            cors: true
+            cors: true,
+            authorizer: {
+              name: "Auth"
+            }
           },
         },
       ],
@@ -70,8 +77,9 @@ const serverlessConfiguration: AWS = {
             method: 'post',
             path: 'videos',
             cors: true,
+            // authorizer: "${self:functions.Auth}",
             request: {
-              schema: {
+              schemas: {
                 'application/json': '${file(src/schema/create-video-schema.json)}'
               }
             }
