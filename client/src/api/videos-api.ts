@@ -33,7 +33,7 @@ export async function getVideos(idToken: string): Promise<Video[]> {
     idToken: string,
     videoName: string
   ): Promise<string> {
-    const response = await Axios.post(`${apiEndpoint}/todos/${videoName}/attachment`, '', {
+    const response = await Axios.post(`${apiEndpoint}/vidoes/${videoName}/attachment`, '', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${idToken}`
@@ -41,4 +41,16 @@ export async function getVideos(idToken: string): Promise<Video[]> {
     })
      console.log('getuploadUrl:', response.data.uploadUrl)
     return response.data.uploadUrl
+  }
+
+  export async function deleteVideo(
+    idToken: string,
+    videoId: string
+  ): Promise<void> {
+    await Axios.delete(`${apiEndpoint}/videos/${videoId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`
+      }
+    })
   }

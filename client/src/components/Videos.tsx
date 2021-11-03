@@ -14,7 +14,7 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createVideo, getVideos } from '../api/videos-api'
+import { createVideo, getVideos, deleteVideo } from '../api/videos-api'
 import Auth from '../auth/Auth'
 import { Video } from '../types/Video'
 import { getUploadUrl, uploadFile } from '../api/todos-api'
@@ -59,13 +59,16 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
     this.props.history.push(`/videos/${todoId}/edit`)
   }
 
-  onVideoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
-    
-    
-  }
 
-  onVideoDelete = async (todoId: string) => {
-    
+  onVideoDelete = async (videoId: string) => {
+    try {
+      await deleteVideo(this.props.auth.getIdToken(), videoId)
+      this.setState({
+        videos: this.state.videos.filter(video => video.videoId !== videoId)
+      })
+    } catch {
+      alert('Video deletion failed')
+    }
   }
 
 
