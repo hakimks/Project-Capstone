@@ -94,6 +94,8 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
 
         {this.renderCreateVideoInput()}
 
+        <Header as="h3">List of User Videos</Header>
+
         {this.renderVideosList()}
       </div>
     )
@@ -168,12 +170,16 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
         {this.state.videos.map((video, pos) => {
           return (
             <Grid.Row key={video.videoId}>
-              <Grid.Column width={10} verticalAlign="middle">
+              <Grid.Column width={3} floated="right">
                 {video.name}
+              </Grid.Column>
+              <Grid.Column width={3} floated="right">
+                {video.videoUrl}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
                 {video.createdAt}
               </Grid.Column>
+              {video.thumbnailUrl}
               <Grid.Column width={1} floated="right">
                 <Button
                   icon
@@ -192,15 +198,11 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {video.videoUrl && (
-                <Embed src={video.videoUrl} size="small" wrapped />
-              )}
+              
               <Grid.Column width={16}>
                 <Divider />
               </Grid.Column>
-              {video.thumbnailUrl && (
-                <Image src={video.thumbnailUrl} size="small" wrapped />
-              )}
+              
               <Grid.Column width={16}>
                 <Divider />
               </Grid.Column>
@@ -227,17 +229,20 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
       }
       
       try {
-        const createdAt = this.calculateDate()
+        const createdAtDate = this.calculateDate()
         this.setState({
-          createdAt
+          createdAt:createdAtDate
         })
         const newVideo = await createVideo(this.props.auth.getIdToken(), {
           name: this.state.name,
-          createdAt: this.state.createdAt,
+          createdAt: createdAtDate,
           videoUrl: this.state.videoUrl
         })
         this.setState({
-          videos: [...this.state.videos, newVideo]
+          videos: [...this.state.videos, newVideo],
+          name: '',
+          createdAt: '',
+          videoUrl: ''
         })
       } catch {
         alert('Video creation failed')
