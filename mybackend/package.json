@@ -12,6 +12,7 @@
   "dependencies": {
     "@middy/core": "^1.5.2",
     "@middy/http-json-body-parser": "^1.5.2",
+    "aws-xray-sdk": "^3.3.3",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.5",
     "middy": "^0.36.0"

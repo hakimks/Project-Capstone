@@ -46,6 +46,14 @@ const serverlessConfiguration: AWS = {
         ],
         Resource: "*",
 
+      },
+      {
+        Effect: 'Allow',
+        Action: [
+          "s3:PutObject",
+          "s3:GetObject"
+        ],
+        Resource: "arn:aws:s3:::${self:provider.environment.THUMBNAIL_S3_BUCKET}/*"
       }
     ]
   },
@@ -180,13 +188,34 @@ const serverlessConfiguration: AWS = {
               {
                 AllowedOrigins: [ '*'],
                 AllowedHeaders: [ '*'],
-                AllowedMethods: [ '*'],
+                AllowedMethods: ['GET', 'PUT', 'POST', 'DELETE', 'HEAD'],
                 MaxAge: 3000
               }
             ]
           }
         }
+      },
+      BucketPolicy: {
+        Type: 'AWS::S3::BucketPolicy',
+        Properties: {
+          PolicyDocument: {
+            Id: 'MyPolicy',
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Sid: 'PublicReadForGetBucketObjects',
+                Effect: 'Allow',
+                Principal: '*',
+                Action: 's3:GetObject',
+                Resource: "arn:aws:s3:::${self:provider.environment.THUMBNAIL_S3_BUCKET}/*"
+
+              }
+            ]
+          },
+          Bucket: `udacitycapestone-hakimks-dev`
+        }
       }
+      
      }
    }
 };

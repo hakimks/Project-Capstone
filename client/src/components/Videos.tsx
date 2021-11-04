@@ -9,6 +9,7 @@ import {
   Divider,
   Grid,
   Header,
+  Checkbox,
   Icon,
   Input,
   Image,
@@ -207,7 +208,13 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
               <Grid.Column width={3} floated="right">
                 {video.createdAt}
               </Grid.Column>
-              {video.thumbnailUrl}
+              <Grid.Column width={3} floated="right">
+              
+              {video.thumbnailUrl && (
+                <Image src={video.thumbnailUrl} size="small" wrapped />
+              )}
+              </Grid.Column>
+              
               <Grid.Column width={1} floated="right">
                 <Button
                   icon

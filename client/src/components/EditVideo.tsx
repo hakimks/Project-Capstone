@@ -23,7 +23,7 @@ interface EditVideoState {
   uploadState: UploadState
 }
 
-export class EditTodo extends React.PureComponent<
+export class EditVideo extends React.PureComponent<
   EditVideoProps,
   EditVideoState
 > {
