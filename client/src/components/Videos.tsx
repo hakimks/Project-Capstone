@@ -1,5 +1,6 @@
 import dateFormat from 'dateformat'
 import { History } from 'history'
+import update from 'immutability-helper'
 import * as React from 'react'
 import {
   Form,
@@ -17,7 +18,7 @@ import {
 import { createVideo, getVideos, deleteVideo } from '../api/videos-api'
 import Auth from '../auth/Auth'
 import { Video } from '../types/Video'
-import { getUploadUrl, uploadFile } from '../api/todos-api'
+import { getUploadUrl, uploadFile, patchVideo } from '../api/videos-api'
 
 interface VideosProps {
   auth: Auth
@@ -55,8 +56,8 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
 
 
 
-  onEditButtonClick = (todoId: string) => {
-    this.props.history.push(`/videos/${todoId}/edit`)
+  onEditButtonClick = (videoId: string) => {
+    this.props.history.push(`/videos/${videoId}/edit`)
   }
 
 
@@ -68,6 +69,24 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
       })
     } catch {
       alert('Video deletion failed')
+    }
+  }
+
+  onVideoCheck = async (pos: number) => {
+    try {
+      const video = this.state.videos[pos]
+      await patchVideo(this.props.auth.getIdToken(), video.videoId, {
+        name: video.name,
+        thumbnailUrl: video.thumbnailUrl,
+        done: !video.done
+      })
+      this.setState({
+        videos: update(this.state.videos, {
+          [pos]: { done: { $set: !video.done } }
+        })
+      })
+    } catch {
+      alert('Todo deletion failed')
     }
   }
 
@@ -173,6 +192,12 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
         {this.state.videos.map((video, pos) => {
           return (
             <Grid.Row key={video.videoId}>
+              <Grid.Column width={1} floated="right">
+                <Checkbox
+                  onChange={() => this.onVideoCheck(pos)}
+                  checked={video.done}
+                />
+              </Grid.Column>
               <Grid.Column width={3} floated="right">
                 {video.name}
               </Grid.Column>

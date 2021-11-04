@@ -5,5 +5,6 @@ export interface Video {
     createdAt: string
     videoUrl: string
     thumbnailUrl?: string 
+    done: boolean
   }
   

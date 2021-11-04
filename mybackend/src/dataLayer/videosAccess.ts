@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { VideoItem } from '../models/VideoItem'
+import {UpdatedVideoRequest } from '../requests/UpdatedVideoRequest'
 
 export class VideosAccess{
     constructor(
@@ -55,5 +56,49 @@ export class VideosAccess{
             }
         }).promise()
         return null
+    }
+
+    // update video with url
+    async updateVideoThumbnailUrl(videoWithUrl: any): Promise<VideoItem>{
+        await this.docClient.update({
+            TableName: this.videoTable,
+            Key: {
+                videoId: videoWithUrl.videoId,
+                userId: videoWithUrl.userId,
+            }, 
+            ExpressionAttributeNames: {"#A": "thumbnailUrl"},
+            UpdateExpression: "set #A = :thumbnailUrl",
+            ExpressionAttributeValues: {
+              ":thumbnailUrl": videoWithUrl.thumbnailUrl,
+          },
+          ReturnValues: "UPDATED_NEW"
+        }).promise()
+        return videoWithUrl;
+    }
+
+    // Update video with done
+    async updateVideo(userId: string, videoId: string, updatedVideo: UpdatedVideoRequest ): Promise<VideoItem>{
+        const params = {
+            TableName: this.videoTable,
+            Key: {
+              userId: userId,
+              todoId: videoId
+            },
+            ExpressionAttributeNames: {
+              '#video_name': 'name',
+            },
+            ExpressionAttributeValues: {
+              ':name': updatedVideo.name,
+              ':thumbnailUrl': updatedVideo.thumbnailUrl,
+              ':done': updatedVideo.done,
+            },
+            UpdateExpression: 'SET #video_name = :name, thumbnailUrl = :thumbnailUrl, done = :done',
+            ReturnValues: 'ALL_NEW',
+          };
+
+          const results = await this.docClient.update(params).promise();
+          console.log("Update of video completed", {results: results});
+          
+          return results.Attributes as VideoItem;
     }
 }

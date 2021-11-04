@@ -4,6 +4,7 @@ import { Grid, Menu, Segment } from 'semantic-ui-react'
 
 import Auth from './auth/Auth'
 import { EditTodo } from './components/EditTodo'
+import { EditVideo } from './components/EditVideo'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Videos } from './components/Videos'
@@ -97,10 +98,10 @@ export default class App extends Component<AppProps, AppState> {
         />
 
         <Route
-          path="/todos/:todoId/edit"
+          path="/videos/:videoId/edit"
           exact
           render={props => {
-            return <EditTodo {...props} auth={this.props.auth} />
+            return <EditVideo {...props} auth={this.props.auth} />
           }}
         />
 

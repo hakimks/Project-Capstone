@@ -29,7 +29,8 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       VIDEOS_TABLE: "Videos-${self:provider.stage}",
-      VIDEOS_TABLE_INDEX: "VideoCreatedAtIndex"
+      VIDEOS_TABLE_INDEX: "VideoCreatedAtIndex",
+      THUMBNAIL_S3_BUCKET: "udacitycapestone-hakimks-${self:provider.stage}"
     },
     lambdaHashingVersion: '20201221',
     iamRoleStatements: [
@@ -103,6 +104,41 @@ const serverlessConfiguration: AWS = {
           },
         },
       ],
+    },
+    generateUploadUrl: {
+      handler: 'src/lambda/http/generateUploadUrl.handler',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: 'videos/{videoId}/thumbnail',
+            cors: true,
+            authorizer: {
+              name: "Auth"
+            },
+          },
+        },
+      ],
+    },
+    updateVideo: {
+      handler: 'src/lambda/http/updateVideo.handler',
+      events: [
+        {
+          http: {
+            method: 'patch',
+            path: 'videos/{videoId}',
+            cors: true,
+            authorizer: {
+              name: "Auth"
+            },
+            request: {
+              schemas: {
+                'application/json': '${file(src/schema/update-video-schema.json)}'
+              }
+            }
+          },
+        },
+      ],
     }
    },
    resources: {
@@ -133,6 +169,22 @@ const serverlessConfiguration: AWS = {
           ],
           BillingMode : 'PAY_PER_REQUEST',
           TableName: "${self:provider.environment.VIDEOS_TABLE}"
+        }
+      },
+      ThumbnailBucket: {
+        Type: 'AWS::S3::Bucket',
+        Properties: {
+          BucketName: "${self:provider.environment.THUMBNAIL_S3_BUCKET}",
+          CorsConfiguration: {
+            CorsRules: [
+              {
+                AllowedOrigins: [ '*'],
+                AllowedHeaders: [ '*'],
+                AllowedMethods: [ '*'],
+                MaxAge: 3000
+              }
+            ]
+          }
         }
       }
      }
