@@ -76,18 +76,22 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
   onVideoCheck = async (pos: number) => {
     try {
       const video = this.state.videos[pos]
-      await patchVideo(this.props.auth.getIdToken(), video.videoId, {
+      const res = await patchVideo(this.props.auth.getIdToken(), video.videoId, {
         name: video.name,
         thumbnailUrl: video.thumbnailUrl,
         done: !video.done
       })
-      this.setState({
-        videos: update(this.state.videos, {
-          [pos]: { done: { $set: !video.done } }
+      if(res){
+        this.setState({
+          videos: update(this.state.videos, {
+            [pos]: { done: { $set: !video.done } }
+          })
         })
-      })
+      }
+      
     } catch {
-      alert('Todo deletion failed')
+      alert('Video checking failed, Make sure you have uploaded a thumbnail frist')
+      
     }
   }
 
@@ -195,6 +199,7 @@ export class Videos extends React.PureComponent<VideosProps, VideosState> {
             <Grid.Row key={video.videoId}>
               <Grid.Column width={1} floated="right">
                 <Checkbox
+                  className="checkbox"
                   onChange={() => this.onVideoCheck(pos)}
                   checked={video.done}
                 />

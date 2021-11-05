@@ -4,7 +4,7 @@ import * as middy from "@middy/core";
 import { cors, httpErrorHandler } from 'middy/middlewares'
 import { getUserId } from '../utils'
 import {UpdatedVideoRequest } from '../../requests/UpdatedVideoRequest'
-import { createVideo, updateVideoThumbnailUrl, updateVideo } from '../../businessLogic/videos'
+import { updateVideo } from '../../businessLogic/videos'
 
 export const handler = middy.default(
     async(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> =>{

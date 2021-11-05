@@ -82,7 +82,7 @@ export class VideosAccess{
             TableName: this.videoTable,
             Key: {
               userId: userId,
-              todoId: videoId
+              videoId: videoId
             },
             ExpressionAttributeNames: {
               '#video_name': 'name',

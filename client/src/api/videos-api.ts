@@ -65,11 +65,14 @@ export async function uploadFile(uploadUrl: string, file: Buffer): Promise<void>
     idToken: string,
     videoId: string,
     updatedVideo: UpdateVideoRequest
-  ): Promise<void> {
-    await Axios.patch(`${apiEndpoint}/videos/${videoId}`, JSON.stringify(updatedVideo), {
+  ): Promise<Video> {
+    const response = await Axios.patch(`${apiEndpoint}/videos/${videoId}`, JSON.stringify(updatedVideo), {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${idToken}`
       }
     })
+    console.log("updated item", response.data);
+    
+    return response.data.item
   }
