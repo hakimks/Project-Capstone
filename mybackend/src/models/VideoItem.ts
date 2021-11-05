@@ -5,5 +5,6 @@ export interface VideoItem {
     createdAt: string
     videoUrl: string
     thumbnailUrl?: string
+    done?: boolean
   }
   
